@@ -30,3 +30,21 @@ private void initializeBoard() {
     board[7][3] = "Q";
     board[7][4] = "K";
 }
+public void movePiece(String from, String to) {
+    int fromRow = 8 - Character.getNumericValue(from.charAt(1));
+    int fromCol = from.charAt(0) - 'a';
+
+    int toRow = 8 - Character.getNumericValue(to.charAt(1));
+    int toCol = to.charAt(0) - 'a';
+
+    String piece = board[fromRow][fromCol];
+
+    if (piece.equals(".")) {
+        System.out.println("No piece at the source square!");
+        return;
+    }
+
+    board[toRow][toCol] = piece;
+    board[fromRow][fromCol] = ".";
+}
+

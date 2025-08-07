@@ -75,4 +75,33 @@ if (piece.equalsIgnoreCase("n")) {
         return false;
     }
 }
+// Bishop movement
+if (piece.equalsIgnoreCase("b")) {
+    if (Math.abs(rowDiff) != Math.abs(colDiff)) {
+        System.out.println("Invalid bishop move.");
+        return false;
+    }
+
+    // Check for obstacles in the diagonal path
+    int rowStep = rowDiff / Math.abs(rowDiff);
+    int colStep = colDiff / Math.abs(colDiff);
+
+    int checkRow = fromRow + rowStep;
+    int checkCol = fromCol + colStep;
+
+    while (checkRow != toRow && checkCol != toCol) {
+        if (!board[checkRow][checkCol].equals(".")) {
+            System.out.println("Path is blocked.");
+            return false;
+        }
+        checkRow += rowStep;
+        checkCol += colStep;
+    }
+
+    // Cannot capture own piece
+    if (!target.equals(".") && Character.isUpperCase(piece.charAt(0)) == Character.isUpperCase(target.charAt(0))) {
+        System.out.println("Cannot capture own piece.");
+        return false;
+    }
+}
 

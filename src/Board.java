@@ -178,5 +178,19 @@ if (piece.equalsIgnoreCase("q")) {
         return false;
     }
 }
+// King movement
+if (piece.equalsIgnoreCase("k")) {
+    if (Math.abs(rowDiff) <= 1 && Math.abs(colDiff) <= 1) {
+        // Cannot capture own piece
+        if (!target.equals(".") && Character.isUpperCase(piece.charAt(0)) == Character.isUpperCase(target.charAt(0))) {
+            System.out.println("Cannot capture own piece.");
+            return false;
+        }
+    } else {
+        System.out.println("Invalid king move.");
+        return false;
+    }
+}
+
 
 

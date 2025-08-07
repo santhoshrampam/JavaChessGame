@@ -104,4 +104,33 @@ if (piece.equalsIgnoreCase("b")) {
         return false;
     }
 }
+// Rook movement
+if (piece.equalsIgnoreCase("r")) {
+    if (fromRow != toRow && fromCol != toCol) {
+        System.out.println("Invalid rook move.");
+        return false;
+    }
+
+    int rowStep = Integer.compare(toRow, fromRow);
+    int colStep = Integer.compare(toCol, fromCol);
+
+    int checkRow = fromRow + rowStep;
+    int checkCol = fromCol + colStep;
+
+    while (checkRow != toRow || checkCol != toCol) {
+        if (!board[checkRow][checkCol].equals(".")) {
+            System.out.println("Path is blocked.");
+            return false;
+        }
+
+        if (checkRow != toRow) checkRow += rowStep;
+        if (checkCol != toCol) checkCol += colStep;
+    }
+
+    // Cannot capture own piece
+    if (!target.equals(".") && Character.isUpperCase(piece.charAt(0)) == Character.isUpperCase(target.charAt(0))) {
+        System.out.println("Cannot capture own piece.");
+        return false;
+    }
+}
 

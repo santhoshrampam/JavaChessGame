@@ -61,3 +61,18 @@ public boolean movePiece(String from, String to, boolean isWhiteTurn) {
     board[fromRow][fromCol] = ".";
     return true;
 }
+// Knight movement
+if (piece.equalsIgnoreCase("n")) {
+    if (!((Math.abs(rowDiff) == 2 && Math.abs(colDiff) == 1) || 
+          (Math.abs(rowDiff) == 1 && Math.abs(colDiff) == 2))) {
+        System.out.println("Invalid knight move.");
+        return false;
+    }
+
+    // Cannot capture own piece
+    if (!target.equals(".") && Character.isUpperCase(piece.charAt(0)) == Character.isUpperCase(target.charAt(0))) {
+        System.out.println("Cannot capture own piece.");
+        return false;
+    }
+}
+

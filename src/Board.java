@@ -5,15 +5,7 @@ public boolean movePiece(String from, String to, boolean isWhiteTurn) {
     int toRow = 8 - Character.getNumericValue(to.charAt(1));
     int toCol = to.charAt(0) - 'a';
 
-    // Invalid input check
-    if (fromRow < 0 || fromRow > 7 || fromCol < 0 || fromCol > 7 ||
-        toRow < 0 || toRow > 7 || toCol < 0 || toCol > 7) {
-        System.out.println("Invalid coordinates!");
-        return false;
-    }
-
     String piece = board[fromRow][fromCol];
-    String target = board[toRow][toCol];
 
     if (piece.equals(".")) {
         System.out.println("No piece at source square!");
@@ -26,37 +18,45 @@ public boolean movePiece(String from, String to, boolean isWhiteTurn) {
         return false;
     }
 
-    // Can't capture own piece
-    if (!target.equals(".") && Character.isUpperCase(target.charAt(0)) == isWhiteTurn) {
+    String destination = board[toRow][toCol];
+
+    // Basic rule: can't capture your own piece
+    if (!destination.equals(".") && Character.isUpperCase(destination.charAt(0)) == isWhiteTurn) {
         System.out.println("You can't capture your own piece!");
         return false;
     }
 
-    // Simplified pawn move logic (you can expand later)
-    if (piece.equals("P")) {
-        if (fromRow - 1 == toRow && fromCol == toCol && target.equals(".")) {
-            // move forward 1
-        } else if (fromRow == 6 && toRow == 4 && fromCol == toCol && target.equals(".")) {
-            // move forward 2 on first move
-        } else if (fromRow - 1 == toRow && Math.abs(fromCol - toCol) == 1 && !target.equals(".") && Character.isLowerCase(target.charAt(0))) {
-            // diagonal capture
-        } else {
-            System.out.println("Invalid pawn move!");
-            return false;
+    // Basic pawn movement
+    if (piece.equals("P") || piece.equals("p")) {
+        int direction = piece.equals("P") ? -1 : 1; // white moves up, black moves down
+        int startRow = piece.equals("P") ? 6 : 1;
+
+        // move forward 1
+        if (toCol == fromCol && toRow == fromRow + direction && destination.equals(".")) {
+            board[toRow][toCol] = piece;
+            board[fromRow][fromCol] = ".";
+            return true;
         }
-    } else if (piece.equals("p")) {
-        if (fromRow + 1 == toRow && fromCol == toCol && target.equals(".")) {
-            // move forward 1
-        } else if (fromRow == 1 && toRow == 3 && fromCol == toCol && target.equals(".")) {
-            // move forward 2 on first move
-        } else if (fromRow + 1 == toRow && Math.abs(fromCol - toCol) == 1 && !target.equals(".") && Character.isUpperCase(target.charAt(0))) {
-            // diagonal capture
-        } else {
-            System.out.println("Invalid pawn move!");
-            return false;
+
+        // move forward 2 from starting row
+        if (toCol == fromCol && fromRow == startRow && toRow == fromRow + 2 * direction && board[fromRow + direction][fromCol].equals(".") && destination.equals(".")) {
+            board[toRow][toCol] = piece;
+            board[fromRow][fromCol] = ".";
+            return true;
         }
+
+        // diagonal capture
+        if (Math.abs(toCol - fromCol) == 1 && toRow == fromRow + direction && !destination.equals(".") && Character.isUpperCase(destination.charAt(0)) != isWhiteTurn) {
+            board[toRow][toCol] = piece;
+            board[fromRow][fromCol] = ".";
+            return true;
+        }
+
+        System.out.println("Invalid pawn move!");
+        return false;
     }
 
+    // For now, allow all other pieces to move freely
     board[toRow][toCol] = piece;
     board[fromRow][fromCol] = ".";
     return true;

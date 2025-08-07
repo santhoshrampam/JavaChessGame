@@ -133,4 +133,50 @@ if (piece.equalsIgnoreCase("r")) {
         return false;
     }
 }
+// Queen movement
+if (piece.equalsIgnoreCase("q")) {
+    if (Math.abs(rowDiff) == Math.abs(colDiff)) {
+        // Diagonal like bishop
+        int rowStep = rowDiff / Math.abs(rowDiff);
+        int colStep = colDiff / Math.abs(colDiff);
+
+        int checkRow = fromRow + rowStep;
+        int checkCol = fromCol + colStep;
+
+        while (checkRow != toRow && checkCol != toCol) {
+            if (!board[checkRow][checkCol].equals(".")) {
+                System.out.println("Path is blocked.");
+                return false;
+            }
+            checkRow += rowStep;
+            checkCol += colStep;
+        }
+    } else if (fromRow == toRow || fromCol == toCol) {
+        // Straight like rook
+        int rowStep = Integer.compare(toRow, fromRow);
+        int colStep = Integer.compare(toCol, fromCol);
+
+        int checkRow = fromRow + rowStep;
+        int checkCol = fromCol + colStep;
+
+        while (checkRow != toRow || checkCol != toCol) {
+            if (!board[checkRow][checkCol].equals(".")) {
+                System.out.println("Path is blocked.");
+                return false;
+            }
+            if (checkRow != toRow) checkRow += rowStep;
+            if (checkCol != toCol) checkCol += colStep;
+        }
+    } else {
+        System.out.println("Invalid queen move.");
+        return false;
+    }
+
+    // Cannot capture own piece
+    if (!target.equals(".") && Character.isUpperCase(piece.charAt(0)) == Character.isUpperCase(target.charAt(0))) {
+        System.out.println("Cannot capture own piece.");
+        return false;
+    }
+}
+
 

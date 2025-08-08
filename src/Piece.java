@@ -31,4 +31,11 @@ public class Piece {
     }
 
     public String getColor() {
-        return
+        return color;
+    }
+
+    @Override
+    public String toString() {
+        return getSymbol();
+    }
+}
